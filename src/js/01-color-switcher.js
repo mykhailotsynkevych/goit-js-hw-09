@@ -11,6 +11,9 @@ const colorShow = {
     }
     this.timerId = setInterval(() => {
       this.isActive = true;
+      startBtn.style.opacity = "0.5";
+      startBtn.style.transition = "all 250ms cubic-bezier(0.4, 0, 0.2, 1)"
+      stopBtn.style.opacity = "1"
 
       document.body.style.backgroundColor = getRandomHexColor();
     //   console.log('))');
@@ -20,6 +23,9 @@ const colorShow = {
   stop() {
     clearInterval(this.timerId);
     this.isActive = false;
+    startBtn.style.opacity = "1"
+    stopBtn.style.transition = "all 250ms cubic-bezier(0.4, 0, 0.2, 1)"
+    stopBtn.style.opacity = "0.5"
   },
 };
 
