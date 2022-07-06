@@ -60,23 +60,18 @@ const options = {
           // console.log(dateNow);
 
           const convertedDiffereceTime = convertMs(
-            selectedDates[0].getTime() - dateNow
-          );
+            selectedDates[0].getTime() - dateNow);
           daysEl.textContent = addLeadingZero(convertedDiffereceTime.days);
           hoursEl.textContent = addLeadingZero(convertedDiffereceTime.hours);
-          minutesEl.textContent = addLeadingZero(
-            convertedDiffereceTime.minutes
-          );
-          secondsEl.textContent = addLeadingZero(
-            convertedDiffereceTime.seconds
-          );
+          minutesEl.textContent = addLeadingZero(convertedDiffereceTime.minutes);
+          secondsEl.textContent = addLeadingZero(convertedDiffereceTime.seconds);
 
           if (
             convertedDiffereceTime.days === 0 &&
             convertedDiffereceTime.hours === 0 &&
             convertedDiffereceTime.minutes === 0 &&
-            convertedDiffereceTime.seconds === 0
-          ) {
+            convertedDiffereceTime.seconds === 0)
+          {
             return clearTimeout(this.timerId);
           }
         }, 1000);
