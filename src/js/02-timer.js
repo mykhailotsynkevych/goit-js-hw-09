@@ -2,8 +2,6 @@ import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
 const startBtn = document.querySelector('[data-start]');
-// const inputEl = document.querySelector('#datetime-picker');
-// console.log(startBtn);
 startBtn.disabled = true;
 
 const daysEl = document.querySelector('[data-days]');
@@ -32,6 +30,10 @@ function convertMs(ms) {
 
   return { days, hours, minutes, seconds };
 }
+
+function addLeadingZero(value) {
+  return String(value).padStart(2, '0');
+}
 // console.log(nowTime);
 
 const options = {
@@ -40,6 +42,7 @@ const options = {
   time_24hr: true,
   defaultDate: new Date(),
   minuteIncrement: 1,
+
   onClose(selectedDates) {
     if (nowTime > selectedDates[0].getTime()) {
       startBtn.disabled = true;
@@ -53,25 +56,29 @@ const options = {
       e.preventDefault();
       startBtn.disabled = true;
 
-      // console.log(convertedDiffereceTime)
-
       this.timerId = setInterval(() => {
+        const dateNow = Date.now();
+        // console.log(dateNow);
+
         const convertedDiffereceTime = convertMs(
-          nowTime - selectedDates[0].getTime()
+          selectedDates[0].getTime() - dateNow
         );
-        daysEl.textContent = convertedDiffereceTime.days;
-        hoursEl.textContent = convertedDiffereceTime.hours;
-        minutesEl.textContent = convertedDiffereceTime.minutes;
-        secondsEl.textContent = convertedDiffereceTime.seconds;
-        // console.log(convertedDiffereceTime.seconds);
-        console.log(convertedDiffereceTime);
+        daysEl.textContent = addLeadingZero(convertedDiffereceTime.days);
+        hoursEl.textContent = addLeadingZero(convertedDiffereceTime.hours);
+        minutesEl.textContent = addLeadingZero(convertedDiffereceTime.minutes);
+        secondsEl.textContent = addLeadingZero(convertedDiffereceTime.seconds);
+
+        if (
+          convertedDiffereceTime.days === 0 &&
+          convertedDiffereceTime.hours === 0 &&
+          convertedDiffereceTime.minutes === 0 &&
+          convertedDiffereceTime.seconds === 0
+        ) {
+          return clearTimeout(this.timerId);
+        }
       }, 1000);
     });
   },
 };
 
 flatpickr('#datetime-picker', options);
-
-// console.log(convertMs(2000)); // {days: 0, hours: 0, minutes: 0, seconds: 2}
-// console.log(convertMs(140000)); // {days: 0, hours: 0, minutes: 2, seconds: 20}
-// console.log(convertMs(24140000)); // {days: 0, hours: 6 minutes: 42, seconds: 20}
