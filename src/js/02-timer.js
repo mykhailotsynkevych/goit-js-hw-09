@@ -34,7 +34,6 @@ function convertMs(ms) {
 function addLeadingZero(value) {
   return String(value).padStart(2, '0');
 }
-// console.log(nowTime);
 
 const options = {
   timerId: null,
@@ -50,34 +49,39 @@ const options = {
     } else {
       console.log(selectedDates[0]);
       startBtn.disabled = false;
+
+      startBtn.addEventListener('click', e => {
+        e.preventDefault();
+
+        startBtn.disabled = true;
+
+        this.timerId = setInterval(() => {
+          const dateNow = Date.now();
+          // console.log(dateNow);
+
+          const convertedDiffereceTime = convertMs(
+            selectedDates[0].getTime() - dateNow
+          );
+          daysEl.textContent = addLeadingZero(convertedDiffereceTime.days);
+          hoursEl.textContent = addLeadingZero(convertedDiffereceTime.hours);
+          minutesEl.textContent = addLeadingZero(
+            convertedDiffereceTime.minutes
+          );
+          secondsEl.textContent = addLeadingZero(
+            convertedDiffereceTime.seconds
+          );
+
+          if (
+            convertedDiffereceTime.days === 0 &&
+            convertedDiffereceTime.hours === 0 &&
+            convertedDiffereceTime.minutes === 0 &&
+            convertedDiffereceTime.seconds === 0
+          ) {
+            return clearTimeout(this.timerId);
+          }
+        }, 1000);
+      });
     }
-
-    startBtn.addEventListener('click', e => {
-      e.preventDefault();
-      startBtn.disabled = true;
-
-      this.timerId = setInterval(() => {
-        const dateNow = Date.now();
-        // console.log(dateNow);
-
-        const convertedDiffereceTime = convertMs(
-          selectedDates[0].getTime() - dateNow
-        );
-        daysEl.textContent = addLeadingZero(convertedDiffereceTime.days);
-        hoursEl.textContent = addLeadingZero(convertedDiffereceTime.hours);
-        minutesEl.textContent = addLeadingZero(convertedDiffereceTime.minutes);
-        secondsEl.textContent = addLeadingZero(convertedDiffereceTime.seconds);
-
-        if (
-          convertedDiffereceTime.days === 0 &&
-          convertedDiffereceTime.hours === 0 &&
-          convertedDiffereceTime.minutes === 0 &&
-          convertedDiffereceTime.seconds === 0
-        ) {
-          return clearTimeout(this.timerId);
-        }
-      }, 1000);
-    });
   },
 };
 
