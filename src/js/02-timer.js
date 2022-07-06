@@ -4,6 +4,10 @@ import 'flatpickr/dist/flatpickr.min.css';
 const startBtn = document.querySelector('[data-start]');
 startBtn.disabled = true;
 
+const inputEl = document.querySelector('#datetime-picker');
+inputEl.disabled = false;
+
+
 const daysEl = document.querySelector('[data-days]');
 const hoursEl = document.querySelector('[data-hours]');
 const minutesEl = document.querySelector('[data-minutes]');
@@ -53,12 +57,14 @@ const options = {
       startBtn.addEventListener('click', e => {
         e.preventDefault();
 
+        
         startBtn.disabled = true;
-
+        
         this.timerId = setInterval(() => {
           const dateNow = Date.now();
           // console.log(dateNow);
-
+          
+          inputEl.disabled = true;
           const convertedDiffereceTime = convertMs(
             selectedDates[0].getTime() - dateNow);
           daysEl.textContent = addLeadingZero(convertedDiffereceTime.days);
@@ -72,6 +78,7 @@ const options = {
             convertedDiffereceTime.minutes === 0 &&
             convertedDiffereceTime.seconds === 0)
           {
+            // inputEl.disabled = false;
             return clearTimeout(this.timerId);
           }
         }, 1000);
